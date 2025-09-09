@@ -1,8 +1,10 @@
 #include <Arduino.h>
-
+#include <FastLED.h>
 #define MA_BROCHE_BOUTON 39
 #define MA_BROCHE_ANGLE 32
 
+
+CRGB monPixel;
 
 #include <MicroOscSlip.h>
 // Le nombre 128 entre les < > ci-dessous est le nombre maximal d'octets réservés pour les messages entrants.
@@ -17,6 +19,8 @@ Serial.begin(115200);
 
 pinMode( MA_BROCHE_BOUTON , INPUT );
 
+FastLED.addLeds<WS2812, 27, GRB>(&monPixel, 1);
+
 }
 
 void loop() {
@@ -28,6 +32,9 @@ void loop() {
   monOsc.sendInt("/angle",lectureAnalogique);
   
   
+  monPixel = CRGB(0, (millis() % 255), 0);
+  FastLED.show();
+
   delay(100);
 }
 
